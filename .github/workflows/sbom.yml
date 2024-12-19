@@ -28,14 +28,17 @@ jobs:
       - name: Install cdxgen
         run: npm install @cyclonedx/cdxgen
 
-      # Generate SBOM
       - name: Generate SBOM
-        run: npx cdxgen -h
+        run: npx cdxgen 
 
-  # Generate SBOM
+              # Generate SBOM
       - name: Generate SBOM
         run: npx cdxgen -o sbom.json
 
+              # Generate SBOM
+      - name: Generate SBOM
+        run: npx cdxgen -t -h
+        
       # Upload SBOM as an artifact
       - name: Upload SBOM artifact
         uses: actions/upload-artifact@v3
