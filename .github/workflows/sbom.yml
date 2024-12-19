@@ -24,17 +24,17 @@ jobs:
       #- name: Install dependencies
        # run: npm install
 
-      # Install CycloneDX BOM CLI
-      - name: Install CycloneDX BOM CLI
-        run: npm install @cyclonedx/bom
+# Install cdxgen globally
+      - name: Install cdxgen
+        run: npm install -g @cyclonedx/cdxgen
 
-      # Generate SBOM with npx
+      # Generate SBOM
       - name: Generate SBOM
-        run: npx cyclonedx-bom -h
-        
-      # Generate SBOM with npx
+        run: cdxgen -h
+
+  # Generate SBOM
       - name: Generate SBOM
-        run: npx cyclonedx-bom -o sbom.json --include-dependencies
+        run: cdxgen -o sbom.json
 
       # Upload SBOM as an artifact
       - name: Upload SBOM artifact
