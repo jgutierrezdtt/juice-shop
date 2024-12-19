@@ -1,0 +1,42 @@
+name: Generate SBOM and Publish
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  generate-sbom:
+    name: Generate SBOM
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Set up Node.js environment
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16 # Cambia a la versión que necesite tu proyecto
+
+      # Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Install CycloneDX BOM CLI
+      - name: Install CycloneDX BOM CLI
+        run: npm install -g @cyclonedx/bom
+
+      # Generate SBOM
+      - name: Generate SBOM
+        run: cyclonedx-bom -o sbom.json --include-dependencies
+
+      # Upload SBOM as an artifact
+      - name: Upload SBOM artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: sbom
+          path: sbom.json
