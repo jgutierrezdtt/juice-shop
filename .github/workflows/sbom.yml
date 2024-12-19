@@ -30,11 +30,11 @@ jobs:
 
       # Generate SBOM
       - name: Generate SBOM
-        run: cdxgen -h
+        run: npx cdxgen -h
 
   # Generate SBOM
       - name: Generate SBOM
-        run: cdxgen -o sbom.json
+        run: npx cdxgen -o sbom.json
 
       # Upload SBOM as an artifact
       - name: Upload SBOM artifact
