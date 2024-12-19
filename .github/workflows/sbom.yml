@@ -21,13 +21,17 @@ jobs:
           node-version: 16 # Cambia a la versión que necesite tu proyecto
 
       # Install dependencies
-      - name: Install dependencies
-        run: npm install
+      #- name: Install dependencies
+       # run: npm install
 
       # Install CycloneDX BOM CLI
       - name: Install CycloneDX BOM CLI
         run: npm install @cyclonedx/bom
 
+      # Generate SBOM with npx
+      - name: Generate SBOM
+        run: npx cyclonedx-bom -h
+        
       # Generate SBOM with npx
       - name: Generate SBOM
         run: npx cyclonedx-bom -o sbom.json --include-dependencies
