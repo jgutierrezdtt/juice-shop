@@ -31,12 +31,12 @@ jobs:
 
               # Generate SBOM
       - name: Generate SBOM
-        run: npx cdxgen -o bom.json -t js --profile research . -o sbom.json
+        run: npx cdxgen -o bom.json -t npm --profile research . -o sbom.json
 
 
               # Generate SBOM
       - name: Generate SBOM
-        run: npx cdxgen -o bom.json -t js --profile research . -p
+        run: npx cdxgen -o bom.json -t npm --profile research . -p
 
             # Validate SBOM file and read contents
       - name: Validate and print SBOM file
