@@ -14,11 +14,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Set up Node.js environment
+      # Set up Node.js environment (Node.js 18 o superior)
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 16 # Cambia a la versión que necesite tu proyecto
+          node-version: 18
 
       # Install dependencies
       #- name: Install dependencies
@@ -26,7 +26,7 @@ jobs:
 
 # Install cdxgen globally
       - name: Install cdxgen
-        run: npm install -g @cyclonedx/cdxgen
+        run: npm install @cyclonedx/cdxgen
 
       # Generate SBOM
       - name: Generate SBOM
