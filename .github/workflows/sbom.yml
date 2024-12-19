@@ -33,11 +33,11 @@ jobs:
 
               # Generate SBOM
       - name: Generate SBOM
-        run: cdxgen -t npm .
+        run: npx cdxgen -t npm .
 
               # Generate SBOM
       - name: Generate SBOM
-        run: cdxgen -t npm . -o sbom.json
+        run: npx cdxgen -t npm . -o sbom.json
         
       # Upload SBOM as an artifact
       - name: Upload SBOM artifact
