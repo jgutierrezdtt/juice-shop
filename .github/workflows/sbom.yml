@@ -21,8 +21,8 @@ jobs:
           node-version: 18
 
       # Install dependencies
-      #- name: Install dependencies
-       # run: npm install
+      - name: Install dependencies
+        run: npm install
 
 # Install cdxgen globally
       - name: Install cdxgen
@@ -33,11 +33,21 @@ jobs:
 
               # Generate SBOM
       - name: Generate SBOM
-        run: npx cdxgen -t npm .
+        run: npx cdxgen -v -t npm .
 
               # Generate SBOM
       - name: Generate SBOM
-        run: npx cdxgen -t npm . -o sbom.json
+        run: npx cdxgen -v -t npm . -o sbom.json
+
+            # Validate SBOM file and read contents
+      - name: Validate and print SBOM file
+        run: |
+          if [ -f sbom.json ]; then
+            echo "SBOM file generated successfully:"
+            cat sbom.json
+          else
+            echo "SBOM file not found!" && exit 1
+          fi
         
       # Upload SBOM as an artifact
       - name: Upload SBOM artifact
