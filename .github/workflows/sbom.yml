@@ -46,18 +46,14 @@ jobs:
               # Generate SBOM
       - name: Generate SBOM
         run: npx cdxgen -o bom.json -t npm --profile research . -o sbom.json
-
-
-              # Generate SBOM
-      - name: Generate SBOM
-        run: npx cdxgen -o bom.json -t npm --profile research . -p
+¡
 
             # Validate SBOM file and read contents
       - name: Validate and print SBOM file
         run: |
-          if [ -f sbom.json ]; then
+          if [ -f bom.json ]; then
             echo "SBOM file generated successfully:"
-            cat sbom.json
+            cat bom.json
           else
             echo "SBOM file not found!" && exit 1
           fi
@@ -67,4 +63,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: sbom
-          path: sbom.json
+          path: bom.json
