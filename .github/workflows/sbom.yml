@@ -21,19 +21,8 @@ jobs:
           node-version: 18
  # Paso 2: Crear el archivo JSON
       - name: Create JSON file
-        run: |
-          echo '{
-            "name": "My Project",
-            "version": "1.0.0",
-            "description": "This is a generated JSON file"
-          }' > output.json
+        run: npm install
 
-      # Paso 3: Subir el JSON como artefacto
-      - name: Upload JSON artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: generated-json
-          path: output.json
 
 
 # Install cdxgen globally
