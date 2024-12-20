@@ -46,7 +46,6 @@ jobs:
               # Generate SBOM
       - name: Generate SBOM
         run: npx cdxgen -o bom.json -t npm --profile research . -o sbom.json
-¡
 
             # Validate SBOM file and read contents
       - name: Validate and print SBOM file
