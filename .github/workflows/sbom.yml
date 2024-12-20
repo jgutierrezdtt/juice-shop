@@ -40,12 +40,11 @@ jobs:
       - name: Install cdxgen
         run: npm install @cyclonedx/cdxgen
 
-      - name: Generate SBOM
-        run: npx cdxgen 
+     
 
               # Generate SBOM
       - name: Generate SBOM
-        run: npx cdxgen -o bom.json -t npm --profile research . -o sbom.json
+        run: npx cdxgen
 
             # Validate SBOM file and read contents
       - name: Validate and print SBOM file
