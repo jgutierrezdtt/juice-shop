@@ -39,24 +39,10 @@ jobs:
             echo "SBOM file not found!" && exit 1
           fi
 
-      - name: Install Trivy from Repository
+      - name: Scan SBOM with Trivy via Docker
         run: |
-          sudo apt-get update
-          sudo apt-get install -y wget apt-transport-https gnupg
-          wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
-          echo "deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
-          sudo apt-get update
-          sudo apt-get install -y trivy
+          docker run --rm -v $(pwd):/data aquasec/trivy sbom --file bom.json --format table > trivy_report.txt
 
-
-      - name: Scan SBOM with Trivy
-        run: |
-          if [ -f bom.json ]; then
-            echo "Scanning SBOM with Trivy..."
-            trivy sbom --file bom.json --format table > trivy_report.txt
-          else
-            echo "SBOM file not found!" && exit 1
-          fi
 
       # Step 5: Upload Trivy scan report as an artifact
       - name: Upload Trivy Report Artifact
