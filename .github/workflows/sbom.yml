@@ -39,12 +39,15 @@ jobs:
             echo "SBOM file not found!" && exit 1
           fi
 
-      - name: Install Trivy
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y wget
-          wget https://github.com/aquasecurity/trivy/releases/latest/download/trivy_0.44.0_Linux-64bit.deb
-          sudo dpkg -i trivy_0.44.0_Linux-64bit.deb
+- name: Install Trivy from Repository
+  run: |
+    sudo apt-get update
+    sudo apt-get install -y wget apt-transport-https gnupg
+    wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
+    echo "deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
+    sudo apt-get update
+    sudo apt-get install -y trivy
+
 
       - name: Scan SBOM with Trivy
         run: |
