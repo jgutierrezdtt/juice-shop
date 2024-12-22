@@ -41,7 +41,7 @@ jobs:
 
       - name: Scan SBOM with Trivy via Docker
         run: |
-          docker run --rm -v $(pwd):/data aquasec/trivy sbom --file bom.json --format table > trivy_report.txt
+          docker run --rm -v $(pwd):/data aquasec/trivy sbom bom.json --format table > trivy_report.txt
 
 
       # Step 5: Upload Trivy scan report as an artifact
