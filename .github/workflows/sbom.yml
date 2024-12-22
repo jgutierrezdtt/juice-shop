@@ -51,7 +51,7 @@ jobs:
         run: |
           if [ -f bom.json ]; then
             echo "Scanning SBOM with Trivy..."
-            trivy sbom --file bom.json --format table > trivy_report.txt
+            trivy sbom  bom.json --format table > trivy_report.txt
           else
             echo "SBOM file not found!" && exit 1
           fi
