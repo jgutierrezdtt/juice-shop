@@ -61,9 +61,10 @@ jobs:
           trivy sbom bom.json --format sarif --output trivy-results.sarif
       
       - name: Upload SARIF to Security
-        uses: github/codeql-action/upload-sarif@v2
+        uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: trivy-results.sarif
+
       
       - name: Scan SBOM with Trivy and Generate JSON Report
         run: |
