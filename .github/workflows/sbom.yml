@@ -15,7 +15,7 @@ jobs:
       - name: Checkout Target Repository (ecosistemas-ios)
         uses: actions/checkout@v3
         with:
-          repository: ElParking/ecosistemas-ios
+          repository: amazing-programming/wrongsecrets
           ref: master # Ensure the workflow checks out the master branch
           token: ${{ secrets.GITHUB_TOKEN }}
 
