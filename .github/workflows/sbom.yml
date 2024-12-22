@@ -56,6 +56,35 @@ jobs:
             echo "SBOM file not found!" && exit 1
           fi
 
+      - name: Scan SBOM with Trivy and Generate SARIF
+        run: |
+          trivy sbom bom.json --format sarif --output trivy-results.sarif
+      
+      - name: Upload SARIF to Security
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: trivy-results.sarif
+      
+      - name: Scan SBOM with Trivy and Generate JSON Report
+        run: |
+          trivy sbom bom.json --format json --output trivy-results.json
+      
+      - name: Create Issues from Trivy Report
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          jq -c '.Results[] | .Vulnerabilities[]' trivy-results.json | while read vuln; do
+            TITLE=$(echo $vuln | jq -r '.Title')
+            PACKAGE=$(echo $vuln | jq -r '.PkgName')
+            SEVERITY=$(echo $vuln | jq -r '.Severity')
+            DESCRIPTION=$(echo $vuln | jq -r '.Description')
+            ISSUE_BODY="**Package:** $PACKAGE\n**Severity:** $SEVERITY\n\n$DESCRIPTION"
+      
+            curl -X POST -H "Authorization: token $GITHUB_TOKEN" \
+              -H "Accept: application/vnd.github.v3+json" \
+              https://api.github.com/repos/${{ github.repository }}/issues \
+              -d "{\"title\": \"$SEVERITY: $TITLE\", \"body\": \"$ISSUE_BODY\"}"
+          done
 
       # Step 5: Upload Trivy scan report as an artifact
       - name: Upload Trivy Report Artifact
