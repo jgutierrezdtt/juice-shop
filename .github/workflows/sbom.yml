@@ -10,20 +10,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout the repository
-      - name: Checkout repository
+     
+   # Step 1: Checkout the target repository and switch to master branch
+      - name: Checkout Target Repository (ecosistemas-ios)
         uses: actions/checkout@v3
-
-      # Set up Node.js environment (Node.js 18 o superior)
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
         with:
-          node-version: 18
- # Paso 2: Crear el archivo JSON
-      - name: Create JSON file
-        run: npm install
-
-
+          repository: ElParking/ecosistemas-ios
+          ref: master # Ensure the workflow checks out the master branch
+          token: ${{ secrets.GITHUB_TOKEN }}
 
 # Install cdxgen globally
       - name: Install cdxgen
@@ -44,7 +38,30 @@ jobs:
           else
             echo "SBOM file not found!" && exit 1
           fi
-        
+
+      - name: Install Trivy
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget
+          wget https://github.com/aquasecurity/trivy/releases/latest/download/trivy_0.44.0_Linux-64bit.deb
+          sudo dpkg -i trivy_0.44.0_Linux-64bit.deb
+
+      - name: Scan SBOM with Trivy
+        run: |
+          if [ -f bom.json ]; then
+            echo "Scanning SBOM with Trivy..."
+            trivy sbom --file bom.json --format table > trivy_report.txt
+          else
+            echo "SBOM file not found!" && exit 1
+          fi
+
+      # Step 5: Upload Trivy scan report as an artifact
+      - name: Upload Trivy Report Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: trivy_report
+          path: trivy_report.txt
+
       # Upload SBOM as an artifact
       - name: Upload SBOM artifact
         uses: actions/upload-artifact@v3
